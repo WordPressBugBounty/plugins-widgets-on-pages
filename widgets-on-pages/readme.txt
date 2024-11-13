@@ -3,8 +3,8 @@ Contributors: toddhalfpenny
 Donate link: https://datamad.co.uk/donate/
 Tags: widgets, widgets in page, widgets in post, sidebar, pages, post, shortcode, inline, widgetise, widgetize, theme
 Requires at least: 2.8
-Tested up to: 6.2.2
-Stable tag: 1.8.1
+Tested up to: 6.7.0
+Stable tag: 1.9.0
 
 The easiest and highest rated way to Add Widgets or Sidebars to Posts and Pages using Visual editor,  shortcodes or template tags.
 
@@ -99,6 +99,12 @@ This is a new feature, and is handled differently for various themes. Although t
 
 
 == Changelog ==
+= 1.9 =
+
+1. Dep bump - Freemius SDK update to 2.9.0
+1. Fixed issue with deprecated calls for showing contextual help
+1. Tested up to 6.7.0
+
 = 1.8.1 =
 
 1. Fixed issue where TurboSidebars could not be shown when picking from the TinyMCE toolbar

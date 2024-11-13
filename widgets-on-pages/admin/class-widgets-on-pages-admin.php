@@ -67,13 +67,7 @@ class Widgets_On_Pages_Admin
         add_action( 'admin_menu', array( $this, 'wop_remove_hidden_meta' ) );
         // Shortcode/Template Tag Custom Meta on Turbo Sidebar CTP.
         add_action( 'load-post.php', array( $this, 'wop_load_post_hook' ) );
-        // TODO - Replace with "add_help_tab" (https://developer.wordpress.org/reference/hooks/contextual_help/)
-        // add_filter(
-        //     'contextual_help',
-        //     array( $this, 'wop_plugin_help' ),
-        //     10,
-        //     3
-        // );
+
         // WYSIWYG Tiny MCE.
         add_action( 'admin_head', array( $this, 'wop_add_my_tc_button' ) );
         add_action( 'wp_ajax_twd_cpt_list', array( $this, 'twd_list_ajax' ) );
@@ -126,7 +120,7 @@ class Widgets_On_Pages_Admin
     public function wop_add_options_page()
     {
         // Top level menu -> Directs to Turbo Sidebar listsing.
-        add_menu_page(
+        $myAdmin_page = add_menu_page(
             __( 'Widgets on Pages Settings', 'widgets-on-pages' ),
             __( 'Widgets on Pages', 'widgets-on-pages' ),
             'manage_options',
@@ -153,6 +147,8 @@ class Widgets_On_Pages_Admin
             'edit_posts',
             'edit.php?post_type=turbo-sidebar-cpt'
         );
+
+        add_action( 'load-'. $this->wop_option_screen_id, array( $this, 'wop_plugin_help' ) );
     }
 
     /**
@@ -175,25 +171,26 @@ class Widgets_On_Pages_Admin
         include_once 'partials/widgets-on-pages-admin-display.php';
     }
 
-    /**
-     * Render the options page for plugin
-     *
-     * @param string	$text The old help.
-     * @param string	$screen_id Unique string id of the screen.
-     * @param WP_Screen $screen Current WP_Screen instance.
-     * @since  1.0.0
-     */
-    public function wop_plugin_help( $text, $screen_id, $screen )
-    {
+	/**
+	 * Render the options page for plugin
+	 *
+	 * @since  1.9.0
+	 */
+	public function wop_plugin_help(  ) {
+		$screen = get_current_screen();
 
-        if ( $screen_id == $this->wop_option_screen_id ) {
-            $text = '<h5>Need help with the Widgets on Pages plugin?</h5>';
-            $text .= '<p>Check out the documentation and support forums for help with this plugin.</p>';
-            $text .= '<a href="http://wordpress.org/extend/plugins/widgets-on-pages/">Documentation</a><br /><a href="https://wordpress.org/support/plugin/widgets-on-pages/">Support forums</a>';
-        }
+    // Add my_help_tab if current screen is My Admin Page
+		$text = '<h5>Need help with the Widgets on Pages plugin?</h5>';
+			$text .= '<p>Check out the documentation and support forums for help with this plugin.</p>';
+			$text .= '<a href="http://wordpress.org/extend/plugins/widgets-on-pages/">Documentation</a><br /><a href="https://wordpress.org/support/plugin/widgets-on-pages/">Support forums</a>';
 
-        return $text;
-    }
+    $screen->add_help_tab( array(
+        'id'	=> 'my_help_tab',
+        'title'	=> __('Widgets on Pages Help'),
+        'content'	=> '<p>' . __( $text) . '</p>',
+    ) );
+
+	}
 
     /**
      * Removes meta boxes from admin screen
